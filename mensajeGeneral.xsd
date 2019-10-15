@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<xs:schema>
+
+	<xs:element name="mensaje">
+		<xs:complexType>
+			<xs:sequence>
+			
+				<xs:element name="idMensaje" type="xs:string"/>
+				
+				<xs:element name="identificacionEmisor">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ipEmisor" type="xs:string"/>
+							<xs:element name="idEmisor" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				
+				<xs:element name="identificacionReceptor">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ipReceptor" type="xs:string"/>
+							<xs:element name="idReceptor" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				
+				<xs:element name="tipoMensaje" type="xs:string"/>
+				
+				<xs:element name="fecha" type="xs:date"/>
+				
+				<xs:element name="horaEnvio" type="xs:time"/>
+				
+				<xs:element name="horaRecepcion" type="xs:time"/>
+				
+				<xs:element name="cuerpo">
+					<xs:complexType>
+					
+					</xs:complexType>
+				</xs:element>
+				
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>
