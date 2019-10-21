@@ -1,0 +1,106 @@
+<!--Mensaje 1-->
+
+<!--TIPO LISTA DE LA COMPRA-->
+
+<!--
+    Mensaje del Comprador a la Tienda.
+    Comprador manda su lista de la compra a la Tienda
+-->
+
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<listaCompra>
+    <producto>
+        <idProducto>Producto 1</idProducto>
+        <cantidad>3</cantidad>
+    </producto>
+    <producto>
+        <idProducto>Producto 2</idProducto>
+        <cantidad>6</cantidad>
+    </producto>
+</listaCompra>
+
+
+
+
+
+<!--Mensaje 2-->
+
+<!--TIPO COINCIDENCIA CON TIENDA-->
+
+<!--
+    Mensaje de la Tienda al Comprador.
+    Tienda manda la lista de los productos que ofrece
+    que además coinciden con los que el Comprador quiere.
+-->
+
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<listaCompra>
+    <producto>
+        <idProducto>Producto 1</idProducto>
+        <cantidad>5</cantidad>
+        <precio>10</precio>
+    </producto>
+    <producto>
+        <idProducto>Producto 2</idProducto>
+        <cantidad>2</cantidad>
+        <precio>15</precio>
+    </producto>
+</listaCompra>
+
+
+
+
+
+<!--Mensaje 3-->
+
+<!--TIPO SOLICITUD DE COMPRA-->
+
+<!--
+    Mensaje de Comprador a la Tienda.
+    Comprador manda a la Tienda los productos y cantidades
+    que desea comprar.
+-->
+
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<listaCompra>
+    <producto>
+        <idProducto>Producto 1</idProducto>
+        <cantidad>3</cantidad>
+    </producto>
+    <producto>
+        <idProducto>Producto 2</idProducto>
+        <cantidad>2</cantidad>
+    </producto>
+</listaCompra>
+
+
+
+
+
+<!--Mensaje 4-->
+
+<!--TIPO PRODUCTOS VENDIDOS-->
+
+<!--
+    Mensaje de la Tienda al Comprador.
+    Tienda le manda la lista de los productos vendidos
+    al Comprador que los solicitó.
+-->
+
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<listaCompra>
+    <producto>
+        <idProducto>Producto 1</idProducto>
+        <cantidad>3</cantidad>
+        <precio>10</precio>
+    </producto>
+    <producto>
+        <idProducto>Producto 2</idProducto>
+        <cantidad>2</cantidad>
+        <precio>15</precio>
+    </producto>
+</listaCompra>
