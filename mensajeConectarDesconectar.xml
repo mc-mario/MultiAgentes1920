@@ -1,32 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <mensaje>
-
-	<!-- Identificador del mensaje -->
-	<idMensaje>conectar</idMensaje>
+	<!-- CABECERA -->
+	<cabecera>
 	
-	<!-- Identificador del emisor (dividido en IP e ID) -->
-	<identificacionEmisor>
-		<ipEmisor></ipEmisor>
-		<idEmisor></idEmisor>
-	</identificacionEmisor>
-	
-	<!-- Identificador del receptor (dividido en IP e ID) -->
-	<identificacionReceptor>
-		<ipReceptor></ipReceptor>
-		<idReceptor></idReceptor>
-	</identificacionReceptor>
-	
-	<!-- Tipo del mensaje -->
-	<tipoMensaje></tipoMensaje>
-	
-	<!-- Fecha del mensaje -->
-	<fecha></fecha>
-	
-	<!-- Hora de envio -->
-	<horaEnvio></horaEnvio>
-	
-	<!-- Hora de recepción -->
-	<horaRecepcion></horaRecepcion>
+		<!-- Identificador del mensaje -->
+		<idMensaje></idMensaje>
+		
+		<!-- Identificador del emisor (dividido en IP e ID) -->
+		<identificacionEmisor>
+			<ipEmisor></ipEmisor>
+			<idEmisor></idEmisor>
+		</identificacionEmisor>
+		
+		<!-- Identificador del receptor (dividido en IP e ID) -->
+		<identificacionReceptor>
+			<ipReceptor></ipReceptor>
+			<idReceptor></idReceptor>
+		</identificacionReceptor>
+		
+		<!-- Tipo del mensaje -->
+		<tipoMensaje></tipoMensaje>
+		
+		<!-- Fecha del mensaje -->
+		<fecha></fecha>
+		
+		<!-- Hora de envio -->
+		<horaEnvio></horaEnvio>
+		
+		<!-- Hora de recepción -->
+		<horaRecepcion></horaRecepcion>
+		
+	</cabecera>
 	
 	<!-- Cuerpo del mensaje -->
 	<cuerpo>
@@ -35,7 +39,7 @@
 				<ip></ip>
 				<id></id>
             </tienda>
-        </list>
+        </listaTiendas>
 	</cuerpo>
 
 </mensaje>
