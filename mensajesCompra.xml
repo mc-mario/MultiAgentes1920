@@ -13,10 +13,12 @@
     <producto>
         <idProducto>Producto 1</idProducto>
         <cantidad>3</cantidad>
+        <precio></precio>
     </producto>
     <producto>
         <idProducto>Producto 2</idProducto>
         <cantidad>6</cantidad>
+        <precio></precio>
     </producto>
 </listaCompra>
 
@@ -69,10 +71,12 @@
     <producto>
         <idProducto>Producto 1</idProducto>
         <cantidad>3</cantidad>
+        <precio></precio>
     </producto>
     <producto>
         <idProducto>Producto 2</idProducto>
         <cantidad>2</cantidad>
+        <precio></precio>
     </producto>
 </listaCompra>
 
