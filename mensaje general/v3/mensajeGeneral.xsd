@@ -4,7 +4,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	
 	
-<xs:element name="mensaje">
+	<xs:element name="mensaje">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="cabecera" type="tipoCabecera"/>
