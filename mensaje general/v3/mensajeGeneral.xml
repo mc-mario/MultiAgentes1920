@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mensaje
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="mensajeGeneral.xsd">
+
+	<!-- CABECERA -->
+	<cabecera>
+	
+		<!-- Identificador del mensaje -->
+		<idMensaje>1234</idMensaje>
+		
+		<!-- Identificador del emisor (dividido en IP e ID) -->
+		<identificacionEmisor>
+			<ipEmisor>aaaaa</ipEmisor>
+			<idEmisor>1</idEmisor>
+		</identificacionEmisor>
+		
+		<!-- Identificador del receptor (dividido en IP e ID) -->
+		<identificacionReceptor>
+			<ipReceptor>aaaaa</ipReceptor>
+			<idReceptor>1</idReceptor>
+		</identificacionReceptor>
+		
+		<!-- Tipo del mensaje -->
+		<tipoMensaje>PRUEBA_RECEPCION</tipoMensaje>
+		
+		<!-- Fecha del mensaje -->
+		<fecha>29/10/2019</fecha>
+		
+		<!-- Hora de envio -->
+		<horaEnvio>11:00</horaEnvio>
+		
+		<!-- Hora de recepción -->
+		<horaRecepcion>11:00</horaRecepcion>
+		
+	</cabecera>
+	
+	<!-- CUERPO -->
+	<cuerpo>
+	
+	</cuerpo>
+
+</mensaje>

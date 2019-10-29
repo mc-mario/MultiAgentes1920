@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+
+<!-- VERSION 3 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	
+	
+<xs:element name="mensaje">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="cabecera" type="tipoCabecera"/>
+				<xs:element name="cuerpo" type="tipoCuerpo"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:simpleType name="tipoIp">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="a*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="tipoMensaje">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TSAT" />
+			<xs:enumeration value="TAAT" />
+			<xs:enumeration value="TSC" />
+			<xs:enumeration value="TPV" />
+			<xs:enumeration value="TDOT" />
+			<xs:enumeration value="TTT" />
+			<xs:enumeration value="PRUEBA_PETICION"/>
+			<xs:enumeration value="PRUEBA_RESPUESTA"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="tipoCabecera">	
+		<xs:sequence>
+			<xs:element name="idMensaje" type="xs:integer"/>
+					
+			<xs:element name="identificacionEmisor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ipEmisor" type="tipoIp"/>
+						<xs:element name="idEmisor" type="xs:integer"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+						
+			<xs:element name="identificacionReceptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ipReceptor" type="tipoIp"/>
+						<xs:element name="idReceptor" type="xs:integer"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+						
+			<xs:element name="tipoMensaje" type="tipoMensaje"/>
+						
+			<xs:element name="fecha" type="xs:date"/>
+						
+			<xs:element name="horaEnvio" type="xs:time"/>
+					
+			<xs:element name="horaRecepcion" type="xs:time"/>
+					
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="tipoCuerpo">
+	
+	</xs:complexType>
+	
+</xs:schema>
