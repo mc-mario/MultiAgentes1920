@@ -14,35 +14,6 @@
 
                             <xs:element name="idProducto" type="xs:string"/>
                             <xs:element name="cantidad" type="xs:integer"/>
-                            
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
-
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-
-</xs:schema>
-
-
-
-<!--Validación válida tanto para TIPO COINCIDENCIA CON TIENDA como para TIPO PRODUCTOS VENDIDOS-->
-
-<?xml version="1.0"?>
-
-<xs:schema>
-
-    <xs:element name="listaCompra">
-        <xs:complexType>
-            <xs:sequence>
-
-                <xs:element name="producto">
-                    <xs:complexType>
-                        <xs:sequence>
-
-                            <xs:element name="idProducto" type="xs:string"/>
-                            <xs:element name="cantidad" type="xs:integer"/>
                             <xs:element name="precio" type="xs:integer"/>
                             
                         </xs:sequence>
@@ -54,3 +25,4 @@
     </xs:element>
 
 </xs:schema>
+
