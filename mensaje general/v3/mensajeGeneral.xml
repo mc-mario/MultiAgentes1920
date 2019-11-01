@@ -12,13 +12,13 @@
 		
 		<!-- Identificador del emisor (dividido en IP e ID) -->
 		<identificacionEmisor>
-			<ipEmisor>aaaaa</ipEmisor>
+			<ipEmisor>192.168.0.1</ipEmisor>
 			<idEmisor>1</idEmisor>
 		</identificacionEmisor>
 		
 		<!-- Identificador del receptor (dividido en IP e ID) -->
 		<identificacionReceptor>
-			<ipReceptor>aaaaa</ipReceptor>
+			<ipReceptor>192.168.0.1</ipReceptor>
 			<idReceptor>1</idReceptor>
 		</identificacionReceptor>
 		
