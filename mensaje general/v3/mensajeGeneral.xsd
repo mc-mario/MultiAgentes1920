@@ -1,19 +1,9 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 
 <!-- VERSION 3 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	
-	
-	<xs:element name="mensaje">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="cabecera" type="tipoCabecera"/>
-				<xs:element name="cuerpo" type="tipoCuerpo"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-	
-	<xs:simpleType name="tipoIp">
+	<xs:simpleType name="tipoIP">
 		<xs:restriction base="xs:string">
 			<xs:pattern value="a*"/>
 		</xs:restriction>
@@ -39,7 +29,7 @@
 			<xs:element name="identificacionEmisor">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="ipEmisor" type="tipoIp"/>
+						<xs:element name="ipEmisor" type="tipoIP"/>
 						<xs:element name="idEmisor" type="xs:integer"/>
 					</xs:sequence>
 				</xs:complexType>
@@ -48,7 +38,7 @@
 			<xs:element name="identificacionReceptor">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="ipReceptor" type="tipoIp"/>
+						<xs:element name="ipReceptor" type="tipoIP"/>
 						<xs:element name="idReceptor" type="xs:integer"/>
 					</xs:sequence>
 				</xs:complexType>
@@ -68,5 +58,14 @@
 	<xs:complexType name="tipoCuerpo">
 	
 	</xs:complexType>
+	
+	<xs:element name="mensaje">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="cabecera" type="tipoCabecera"/>
+				<!--<xs:element name="cuerpo" type="tipoCuerpo"/>-->
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 	
 </xs:schema>
