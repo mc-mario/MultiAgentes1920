@@ -83,12 +83,12 @@
     </xs:complexContent>
 	</xs:complexType>
 	
-	<xs:complexType name="tipoCuerpoPRUEBA_RECEPCION">
+	<xs:complexType name="tipoCuerpoPRUEBA_RESPUESTA">
     <xs:complexContent>
       <xs:extension base="tipoCuerpo">
         <xs:sequence>
           <!-- Unicamente contiene un string -->
-          <xs:element name="stringPruebaRecepcion" type="xs:string"/>
+          <xs:element name="stringPruebaRespuesta" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
