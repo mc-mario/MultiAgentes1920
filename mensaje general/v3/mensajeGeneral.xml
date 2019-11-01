@@ -37,10 +37,9 @@
 	</cabecera>
 	
 	<!-- CUERPO -->
-	<!--
-	<cuerpo>
-	
+	<!-- NOTA: Importante xsi:type para indicar el tipo de cuerpo que espera. -->
+	<cuerpo xsi:type="tipoCuerpoPRUEBA_PETICION">
+	  <stringPruebaPeticion>PRUEBA PETICION</stringPruebaPeticion>
 	</cuerpo>
-	-->
 	
 </mensaje>
