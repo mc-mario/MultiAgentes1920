@@ -15,6 +15,8 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="TSAT" /> <!-- Tipo Solicitud de Acceso a Tienda-->
 			<xs:enumeration value="TAAT" /> <!-- Tipo ACK de Acceso a Tienda-->
+			<xs:enumeration value="TLC" /> <!-- Tipo Lista de la Compra-->
+			<xs:enumeration value="TCT" /> <!-- Tipo Coincidencia con Tienda-->
 			<xs:enumeration value="TSC" /> <!-- Tipo Solicitud de Compra-->
 			<xs:enumeration value="TPV" /> <!-- Tipo de Productos Vendidos-->
 			<xs:enumeration value="TDOT" /> <!-- Tipo Dime Otras Tiendas-->
