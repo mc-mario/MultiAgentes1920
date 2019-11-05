@@ -33,12 +33,13 @@
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                cargarXMLCabecera(this);
-                cargarXMLCuerpo(this);
+                console.log(xhttp.responseText);
             }
         };
-        xhttp.open("GET", "mensajeGeneral.xml", true);
-        xhttp.send();
+        xhttp.open("POST", "http://161.67.197.10:90/hotelTienda.php", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		var mensaje = "mensaje=sorpresa"
+        xhttp.send(mensaje);
     }
 
     function cargarXMLCabecera(xml){
