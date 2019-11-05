@@ -11,8 +11,12 @@ function writeMessageTLC(idMensaje, ipEmisor, idEmisor, ipReceptor, idReceptor, 
     //writeBodyTLC(xmlDoc, ['producto 1', 'producto 2'], [3, 6]);
     //console.log(xmlDoc.getElementsByTagName("idProducto")[1].childNodes[0].nodeValue);
     
-    //Devuelve el XML generado
-    return xmlDoc;
+    //Se parsea el objeto DOM a String
+    xmlString = convertToString(xmlDoc);
+    //console.log(xmlString);
+
+    //Devuelve el String generado
+    return xmlString;
 }
 
 //Añade al cuerpo del mensaje el tipo Lista de la compra

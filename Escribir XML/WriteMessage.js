@@ -76,3 +76,9 @@ function createXML(idMensaje, ipEmisor, idEmisor, ipReceptor, idReceptor, tipoMe
 
     return xmlDoc;
 }
+
+function convertToString(xmlDoc){
+    var serializer = new XMLSerializer();
+    var newXmlStr = serializer.serializeToString(xmlDoc);
+    return newXmlStr;
+}
