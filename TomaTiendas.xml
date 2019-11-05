@@ -1,0 +1,13 @@
+<!----------TIPO TOMA TIENDAS----------->
+<?xml version="1.0" encoding="UTF-8"?>
+<t:cuerpo xmlns:t="http://www.dsi/uclm/multiagentes/grupo3">
+  <!-- Bloque de una dirección -->
+  <t:direccion>
+	<!-- Dirección del comprador del que se obtiene esta IP -->
+	<t:comprador> 123.456.789.123 </t:comprador>
+	<!-- Dirección de la tienda -->
+	<t:ip> 192.168.0.1 </t:ip>
+	<!-- Id de la tienda -->
+    <t:id> 1 </t:id>
+  </t:direccion> 
+</t:cuerpo>
