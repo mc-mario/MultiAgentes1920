@@ -7,8 +7,12 @@ function writeMessageTSAT(idMensaje, ipEmisor, idEmisor, ipReceptor, idReceptor,
     //Añade el cuerpo del XML
     writeBodyTSAT(xmlDoc, arrayTiendas);
 
-    //Devuelve el XML generado
-    return xmlDoc;
+    //Se parsea el objeto DOM a String
+    xmlString = convertToString(xmlDoc);
+    //console.log(xmlString);
+
+    //Devuelve el String generado
+    return xmlString;
 }
 
 // Cuerpo del Solicitud Acceso a Tienda
