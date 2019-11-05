@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+
+<!-- VERSION 2 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="https://www.w3schools.com/schema">
+    <xs:element name="cuerpo">
+        <xs:complexType>
+            <xs:sequence>
+                <!-- Dentro del protocolo TSAT -->
+                <xs:element name="protocolo">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="conectar" />
+                            <xs:enumeration value="ack" />
+                            <xs:enumeration value="desconectar" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="listaTiendas">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="tienda">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="ipTienda">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:token">
+                                                    <xs:pattern value="([0-9]{3}.){3}.[0-9]{3}" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="idTienda" type="xs:integer" />
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="error"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
