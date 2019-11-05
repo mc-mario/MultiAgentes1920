@@ -1,97 +1,43 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 
 <!-- VERSION 2 -->
-<xs:schema>
-
-	<xs:element name="mensaje" use="required">
-		<xs:complexType>
-			<xs:sequence>
-				
-				<xs:element name="cabecera" use="required">
-					<xs:complexType>
-						<xs:sequence>
-						
-							<xs:element name="idMensaje" type="xs:integer" use="required"/>
-							
-							<xs:element name="identificacionEmisor" use="required">
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element name="ipEmisor" use="required">
-											<xs:simpleType>
-												<xs:restriction base="xs.string">
-													<xs:pattern value="([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]"/>
-												</xs:restriction>
-											</xs:simpleType>
-										</xs:element>
-										<xs:element name="idEmisor" type="xs:integer" use="required"/>
-									</xs:sequence>
-								</xs:complexType>
-							</xs:element>
-							
-							<xs:element name="identificacionReceptor" use="required">
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element name="ipReceptor" use="required">
-											<xs:simpleType>
-												<xs:restriction base="xs.string">
-													<xs:pattern value="([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]"/>
-												</xs:restriction>
-											</xs:simpleType>
-										</xs:element>
-										<xs:element name="idReceptor" type="xs:integer" use="required"/>
-									</xs:sequence>
-								</xs:complexType>
-							</xs:element>
-							
-							<xs:element name="tipoMensaje" use="required">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:enumeration value="TSAT" />
-										<xs:enumeration value="TAAT" />
-										<xs:enumeration value="TSC" />
-										<xs:enumeration value="TPV" />
-										<xs:enumeration value="TDOT" />
-										<xs:enumeration value="TTT" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-							
-							<xs:element name="fecha" type="xs:date" use="required"/>
-							
-							<xs:element name="horaEnvio" type="xs:time" use="required"/>
-							
-							<xs:element name="horaRecepcion" type="xs:time" use="required"/>
-						
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				
-				<xs:element name="cuerpo" use="required">
-					<xs:complexType>
-                    <xs:element name="listaTiendas">
-                        <xs:complexType>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="https://www.w3schools.com/schema">
+    <xs:element name="cuerpo">
+        <xs:complexType>
+            <xs:sequence>
+                <!-- Dentro del protocolo TSAT -->
+                <xs:element name="protocolo">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="conectar" />
+                            <xs:enumeration value="ack" />
+                            <xs:enumeration value="desconectar" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="listaTiendas">
+                    <xs:complexType>
+                        <xs:sequence>
                             <xs:element name="tienda">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="ipTienda" use="required">
-                                                <xs:simpleType>
-                                                    <xs:restriction base="xs.string">
-                                                        <xs:pattern value="([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]"/>
-                                                    </xs:restriction>
-                                                </xs:simpleType>
+                                        <xs:element name="ipTienda">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:token">
+                                                    <xs:pattern value="([0-9]{3}.){3}.[0-9]{3}" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
                                         </xs:element>
-                                        <xs:element name="idTienda" type="xs:integer" use="required"/>
+                                        <xs:element name="idTienda" type="xs:integer" />
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
-                        </xs:complexType>
-                    </xs:element>
-					
-					</xs:complexType>
-				</xs:element>
-				
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="error"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 
 </xs:schema>

@@ -31,15 +31,17 @@
 		<horaRecepcion></horaRecepcion>
 		
 	</cabecera>
-	
+
 	<!-- Cuerpo del mensaje -->
 	<cuerpo>
+		<protocolo></protocolo>
         <listaTiendas>
             <tienda>
 				<ip></ip>
 				<id></id>
             </tienda>
-        </listaTiendas>
+		</listaTiendas>
+		<error></error>
 	</cuerpo>
 
 </mensaje>
