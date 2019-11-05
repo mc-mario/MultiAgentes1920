@@ -1,0 +1,34 @@
+
+<!----------TIPO TOMA TIENDAS----------->
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.dsi/uclm/multiagentes/grupo3">
+  <xs:element name="cuerpo">
+    <xs:complexType>
+      <xs:sequence>
+	  <!-- Esquema del boque de una dirección -->
+        <xs:element name="direccion">
+          <xs:complexType>
+            <xs:sequence>
+			<!-- Esquema del la dirección del comprador del que se obtiene esta IP -->
+			  <xs:element name="comprador">
+				<xs:restriction base="xs:string">
+					<xs:pattern value="([0-9]*\.){3}[0-9]*" />
+				</xs:restriction>
+			  </xs:element>
+			  <!-- Esquema del la dirección de la tienda -->
+              <xs:element name="ip">
+				<!-- Debe de ser de tipo string -->
+				<xs:restriction base="xs:string">
+					<!-- Debe tener la estructura de una dirección ip -->
+					<xs:pattern value="([0-9]*\.){3}[0-9]*" />
+				</xs:restriction>
+			  </xs:element>
+			  <!-- Esquema de la id de la tienda -->
+              <xs:element type="xs:int" name="id"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
