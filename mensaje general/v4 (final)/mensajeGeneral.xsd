@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0"?>
 
-<!-- VERSION 4-->
+<!-- VERSION 4 - Luna Jiménez Fernández-->
+<!-- Ultima modificación - 12/11/2019 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	
 	<!-- IP. Debe seguir el formato XXX.XXX.XXX.XXX de IPv4-->
@@ -13,8 +14,8 @@
 	<!-- Tipo de mensaje. Enumeración, admite únicamente los siguientes valores:-->
 	<xs:simpleType name="tipoMensaje">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="TSAT" /> <!-- Tipo Solicitud de Acceso a Tienda-->
-			<xs:enumeration value="TAAT" /> <!-- Tipo ACK de Acceso a Tienda-->
+			<xs:enumeration value="TSAT" /> <!-- Tipo Solicitud de Acceso a Tienda (SIRVE PARA CONECTAR Y DESCONECTAR)-->
+			<xs:enumeration value="TAAT" /> <!-- Tipo ACK de Acceso a Tienda (SIRVE PARA CONECTAR Y DESCONECTAR)-->
 			<xs:enumeration value="TLC" /> <!-- Tipo Lista de la Compra-->
 			<xs:enumeration value="TCT" /> <!-- Tipo Coincidencia con Tienda-->
 			<xs:enumeration value="TSC" /> <!-- Tipo Solicitud de Compra-->
@@ -70,6 +71,32 @@
 		</xs:sequence>
 	</xs:complexType>
 	
+	<!-- Tipo Protocolo (utilizado en cuerpos) -->
+	<xs:simpleType name="tipoProtocolo">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CONEXION" /> <!-- Conexion -->
+			<xs:enumeration value="DESCONEXION" /> <!-- Conexion -->
+		</xs:restriction>
+	</xs:simpleType>
+	
+  <!-- Tipo Tienda (utilizado en TSAT) -->
+  <xs:complexType name="tienda">
+    <xs:sequence>
+      <!-- IP de la tienda conocida. Tipo IP -->
+      <xs:element name="ip" type="tipoIP"/>
+      <!-- ID de la tienda conocida. Tipo integer -->
+      <xs:element name="id" type="xs:integer"/>
+    </xs:sequence>
+  </xs:complexType>
+	
+	<!-- Tipo Lista Tiendas (utilizado en TSAT) -->
+	<xs:complexType name="tipoListaTiendas">
+    <xs:sequence>
+      <!-- Tienda conocida por el comprador. Puede haber una o más. Utiliza el tipo tienda -->
+      <xs:element name="tienda" type="tipoTienda" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+	</xs:complexType>
+	
 	<!-- Tipo Producto (utilizado en cuerpos) -->
 	<xs:complexType name="tipoProducto">
     <xs:sequence>
@@ -94,30 +121,39 @@
     </xs:sequence>
 	</xs:complexType>
 	
+	<!-- Tipo Vacio (usado para elementos vacios) -->
+	<xs:simpleType name="tipoVacio">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+	
 	<!-- Tipo del cuerpo. Abstracto para que cada tipo de cuerpo pueda derivar de esta clase ("polimorfismo") -->
 	<xs:complexType name="tipoCuerpo" abstract="true"/>
 	
 	<!-- TIPOS DE CUERPOS -->
 	
-	<!-- Tipo Solicitud Acceso a Tienda (TSAT) (SIN ACABAR)-->
+	<!-- Tipo Solicitud Acceso a Tienda (TSAT) -->
 	<xs:complexType name="tipoTSAT">
     <xs:complexContent>
       <xs:extension base="tipoCuerpo">
         <xs:sequence>
-          <!-- Unicamente contiene un string -->
-          <xs:element name="stringPruebaPeticion" type="xs:string"/>
+          <!-- Tipo del protocolo. Puede ser conexion o desconexion -->
+          <xs:element name="protocolo" type="tipoProtocolo"/>
+          <!-- Lista de tiendas. Definido el tipo previamente -->
+          <xs:element name="listaTiendas" type="tipoListaTiendas"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
 	</xs:complexType>
 	
-	<!-- Tipo ACK Acceso a Tienda (TAAT) (SIN ACABAR)-->
+	<!-- Tipo ACK Acceso a Tienda (TAAT) -->
 	<xs:complexType name="tipoTAAT">
     <xs:complexContent>
       <xs:extension base="tipoCuerpo">
         <xs:sequence>
-          <!-- Unicamente contiene un string -->
-          <xs:element name="stringPruebaPeticion" type="xs:string"/>
+          <!-- ACK. Tipo vacio -->
+          <xs:element name="ACK" type="tipoVacio"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -177,13 +213,7 @@
       <xs:extension base="tipoCuerpo">
         <xs:sequence>
         <!-- NINGUN ELEMENTO -->
-          <xs:element name="vacio">
-            <xs:simpleType>
-              <xs:restriction base="xs:string">
-                <xs:maxLength value="0"/>
-              </xs:restriction>
-            </xs:simpleType>
-          </xs:element>
+          <xs:element name="solicitud" type="tipoVacio"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
