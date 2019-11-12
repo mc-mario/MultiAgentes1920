@@ -28,7 +28,6 @@
 
 <script>
     document.getElementById("boton1").addEventListener("click", loadDoc);
-
     function loadDoc() {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
@@ -42,11 +41,11 @@
         xhttp.send(mensaje);
     }
 
+
     function cargarXMLCabecera(xml){
         var docXML = xml.responseXML;
         var tabla = "<tr><th>Id mensaje</th><th>IP emisor</th><th>Id emisor</th><th>IP receptor</th><th>Id receptor</th><th>Tipo mensaje</th><th>Fecha</th><th>Hora envio</th><th>Hora recepcion</th></tr>";
         var cabecera = docXML.getElementsByTagName("cabecera");
-
         //Id mensaje
         tabla += "<tr><td>";
         tabla += docXML.getElementsByTagName("idMensaje")[0].childNodes[0].nodeValue;
@@ -61,7 +60,7 @@
         tabla += "<td>";
         tabla += docXML.getElementsByTagName("idEmisor")[0].childNodes[0].nodeValue;
         tabla += "</td>";
-        
+
         //IP Receptor
         tabla += "<td>";
         tabla += docXML.getElementsByTagName("ipReceptor")[0].childNodes[0].nodeValue;
@@ -86,35 +85,63 @@
         tabla += "<td>";
         tabla += docXML.getElementsByTagName("horaEnvio")[0].childNodes[0].nodeValue;
         tabla += "</td>";
+       
 
         //Id emisor
         tabla += "<td>";
         tabla += docXML.getElementsByTagName("horaRecepcion")[0].childNodes[0].nodeValue;
         tabla += "</td>";
-
         document.getElementById("tabla1").innerHTML = tabla;
+
+        var cabecera = {
+            idMensaje = docXML.getElementsByTagName("idMensaje")[0].childNodes[0].nodeValue,  
+            ipEmisor = docXML.getElementsByTagName("ipEmisor")[0].childNodes[0].nodeValue,
+            idEmisor = docXML.getElementsByTagName("idEmisor")[0].childNodes[0].nodeValue,
+            ipReceptor = docXML.getElementsByTagName("ipReceptor")[0].childNodes[0].nodeValue,
+            idReceptor = docXML.getElementsByTagName("idReceptor")[0].childNodes[0].nodeValue,
+            tipoMensaje = docXML.getElementsByTagName("tipoMensaje")[0].childNodes[0].nodeValue,
+            fecha = docXML.getElementsByTagName("fecha")[0].childNodes[0].nodeValue,
+            horaEnvio = docXML.getElementsByTagName("horaEnvio")[0].childNodes[0].nodeValue,
+            horaRecepcion = docXML.getElementsByTagName("horaRecepcion")[0].childNodes[0].nodeValue
+        };
+
+        return cabecera;
+
     }
 
+
     function cargarXMLCuerpo(xml){
+
         var docXML = xml.responseXML;
         var tipoMensaje = docXML.getElementsByTagName("tipoMensaje")[0].childNodes[0].nodeValue;
         var tablaCuerpo ="";
-
         //Mensajes para la conexion/desconexion
         if (tipoMensaje.localeCompare("TSAT") == 0 || tipoMensaje.localeCompare("TAAT") == 0){
             var tiendas = docXML.getElementsByTagName("tienda");
             tablaCuerpo += "<tr><th>IP tienda</th><th>Id Tienda</th></tr>";
+
+            var ipsTiendas = [];
+            var idsTiendas = [];
 
             for (var i = 0; i < tiendas.length; i++){
                 //IP tienda
                 tablaCuerpo += "<tr><td>";
                 tablaCuerpo += tiendas[i].getElementsByTagName("ip")[0].textContent;
 
+                ipsTiendas.append(tiendas[i].getElementsByTagName("ip")[0].textContent);
+
                 //Id tienda
                 tablaCuerpo += "</td><td>";
                 tablaCuerpo += tiendas[i].getElementsByTagName("id")[0].textContent;
                 tablaCuerpo += "</td></tr>";
-                }
+
+                idsTiendas.append(tiendas[i].getElementsByTagName("id")[0].textContent);
+            }
+
+            var cuerpo = {
+                idsTiendas = this.idsTiendas,
+                ipsTiendas = this.ipsTiendas
+            };
         }
 
         //Mensajes para la compra
@@ -122,28 +149,70 @@
             var productos = docXML.getElementsByTagName("producto");
             tablaCuerpo += "<tr><th>Id producto</th><th>Cantidad</th><th>Precio</th></tr>";
 
+            var idsProductos = [];
+            var cantidadesProductos = [];
+            var preciosProductos = [];
+
             for (var i = 0; i < productos.length; i++){
                 //Id producto
                 tablaCuerpo += "<tr><td>";
                 tablaCuerpo += productos[i].getElementsByTagName("idProducto")[0].textContent;
 
+                idsProductos.append(tiendas[i].getElementsByTagName("idProducto")[0].textContent);
+
                 //Cantidad
                 tablaCuerpo += "</td><td>";
                 tablaCuerpo += productos[i].getElementsByTagName("cantidad")[0].textContent;
+
+                cantidadesProductos.append(tiendas[i].getElementsByTagName("cantidad")[0].textContent);
 
                 //Precio
                 tablaCuerpo += "</td><td>";
                 tablaCuerpo += productos[i].getElementsByTagName("precio")[0].textContent;
                 tablaCuerpo += "</td></tr>";
-            }
-        }
 
-        //Mensajes para la consulta de otras tiendas
-        if (tipoMensaje.localeCompare("TDOT") == 0 || tipoMensaje.localeCompare("TTT") == 0){
-            //FALTA   
+                preciosProductos.append(tiendas[i].getElementsByTagName("precio")[0].textContent);
+
+            }
+            var cuerpo = {
+                idsProductos = this.idsProductos,
+                cantidadesProductos = this.cantidadesProductos,
+                preciosProductos = this.preciosProductos
+            };
+        }
+        //Mesnajes para la consulta de otras tiendas
+        if(tipoMensaje.localeCompare("TDOT") == 0){
+            //Este cuerpo esta vacio
+            var cuerpo = {};
+        }
+        
+        if (tipoMensaje.localeCompare("TTT") == 0){
+            var direcciones = docXML.getElementsByTagName("direccion");
+            var compradores = [];
+            var ips = [];
+            var ids = [];
+
+            for (var i = 0; i < direcciones.length; i++){
+                //Comprador
+                compradores.append(productos[i].getElementsByTagName("comprador")[0].textContent);
+
+                //IPs
+                ips.append(productos[i].getElementsByTagName("ip")[0].textContent);
+
+                //Ids
+                ids.append(productos[i].getElementsByTagName("id")[0].textContent);
+            }
+
+            var cuerpo = {
+                compradores = this.compradores,
+                ips = this.ips,
+                ids = this.ids
+            };
         }
 
         document.getElementById("tabla2").innerHTML = tablaCuerpo;
+
+        return cuerpo;
     }
 </script>
 </html>
