@@ -1,0 +1,5 @@
+100 Tipos de productos (p1, p2, p3, ...)
+30 Prod por comprador
+300 Prod por tienda
+10 tiendas por host (2 hosts)
+20 Compradores por host
