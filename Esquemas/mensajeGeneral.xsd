@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0"?>
 
-<!-- VERSION 3 -->
+<!-- VERSION 4 - Luna Jiménez Fernández-->
+<!-- Ultima modificación - 12/11/2019 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	
 	<!-- IP. Debe seguir el formato XXX.XXX.XXX.XXX de IPv4-->
@@ -13,8 +14,8 @@
 	<!-- Tipo de mensaje. Enumeración, admite únicamente los siguientes valores:-->
 	<xs:simpleType name="tipoMensaje">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="TSAT" /> <!-- Tipo Solicitud de Acceso a Tienda-->
-			<xs:enumeration value="TAAT" /> <!-- Tipo ACK de Acceso a Tienda-->
+			<xs:enumeration value="TSAT" /> <!-- Tipo Solicitud de Acceso a Tienda (SIRVE PARA CONECTAR Y DESCONECTAR)-->
+			<xs:enumeration value="TAAT" /> <!-- Tipo ACK de Acceso a Tienda (SIRVE PARA CONECTAR Y DESCONECTAR)-->
 			<xs:enumeration value="TLC" /> <!-- Tipo Lista de la Compra-->
 			<xs:enumeration value="TCT" /> <!-- Tipo Coincidencia con Tienda-->
 			<xs:enumeration value="TSC" /> <!-- Tipo Solicitud de Compra-->
@@ -70,8 +71,165 @@
 		</xs:sequence>
 	</xs:complexType>
 	
+	<!-- Tipo Protocolo (utilizado en cuerpos) -->
+	<xs:simpleType name="tipoProtocolo">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CONEXION" /> <!-- Conexion -->
+			<xs:enumeration value="DESCONEXION" /> <!-- Conexion -->
+		</xs:restriction>
+	</xs:simpleType>
+	
+  <!-- Tipo Tienda (utilizado en TSAT) -->
+  <xs:complexType name="tienda">
+    <xs:sequence>
+      <!-- IP de la tienda conocida. Tipo IP -->
+      <xs:element name="ip" type="tipoIP"/>
+      <!-- ID de la tienda conocida. Tipo integer -->
+      <xs:element name="id" type="xs:integer"/>
+    </xs:sequence>
+  </xs:complexType>
+	
+	<!-- Tipo Lista Tiendas (utilizado en TSAT) -->
+	<xs:complexType name="tipoListaTiendas">
+    <xs:sequence>
+      <!-- Tienda conocida por el comprador. Puede haber una o más. Utiliza el tipo tienda -->
+      <xs:element name="tienda" type="tipoTienda" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+	</xs:complexType>
+	
+	<!-- Tipo Producto (utilizado en cuerpos) -->
+	<xs:complexType name="tipoProducto">
+    <xs:sequence>
+      <!-- ID del producto. Es un string -->
+      <xs:element name="idProducto" type="xs:string"/>
+      <!-- Cantidad de productos. Es un entero -->
+      <xs:element name="cantidad" type="xs:integer"/>
+      <!-- Precio de los productos. Es un float. POR AHORA OPCIONAL -->
+      <xs:element name="precio" type="xs:float" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+	</xs:complexType>
+	
+	<!-- Tipo Direccion (utilizado en cuerpos) -->
+	<xs:complexType name="tipoDireccion">
+    <xs:sequence>
+      <!-- IP del comprador del que proviene la IP -->
+      <xs:element name="comprador" type="tipoIP"/>
+      <!-- IP de la tienda  -->
+      <xs:element name="ip" type="tipoIP"/>
+      <!-- ID de la tienda. Integer -->
+      <xs:element name="id" type="xs:integer"/>
+    </xs:sequence>
+	</xs:complexType>
+	
+	<!-- Tipo Vacio (usado para elementos vacios) -->
+	<xs:simpleType name="tipoVacio">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+	
 	<!-- Tipo del cuerpo. Abstracto para que cada tipo de cuerpo pueda derivar de esta clase ("polimorfismo") -->
 	<xs:complexType name="tipoCuerpo" abstract="true"/>
+	
+	<!-- TIPOS DE CUERPOS -->
+	
+	<!-- Tipo Solicitud Acceso a Tienda (TSAT) -->
+	<xs:complexType name="tipoTSAT">
+    <xs:complexContent>
+      <xs:extension base="tipoCuerpo">
+        <xs:sequence>
+          <!-- Tipo del protocolo. Puede ser conexion o desconexion -->
+          <xs:element name="protocolo" type="tipoProtocolo"/>
+          <!-- Lista de tiendas. Definido el tipo previamente -->
+          <xs:element name="listaTiendas" type="tipoListaTiendas"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+	</xs:complexType>
+	
+	<!-- Tipo ACK Acceso a Tienda (TAAT) -->
+	<xs:complexType name="tipoTAAT">
+    <xs:complexContent>
+      <xs:extension base="tipoCuerpo">
+        <xs:sequence>
+          <!-- ACK. Tipo vacio -->
+          <xs:element name="ACK" type="tipoVacio"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+	</xs:complexType>
+	
+	<!-- Tipo Lista de la Compra (TLC) -->
+	<xs:complexType name="tipoTLC">
+    <xs:complexContent>
+      <xs:extension base="tipoCuerpo">
+        <xs:sequence>
+          <!-- Asumimos que tiene uno o más productos -->
+          <xs:element name="producto" type="tipoProducto" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+	</xs:complexType>
+	
+	<!-- Tipo Coincidencia con Tienda (TCT) -->
+	<xs:complexType name="tipoTCT">
+    <xs:complexContent>
+      <xs:extension base="tipoCuerpo">
+        <xs:sequence>
+          <!-- Asumimos que tiene cero o más productos (puede no haber ninguna coincidencia) -->
+          <xs:element name="producto" type="tipoProducto" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+	</xs:complexType>
+	
+	<!-- Tipo Solicitud de Compra (TSC) -->
+	<xs:complexType name="tipoTSC">
+    <xs:complexContent>
+      <xs:extension base="tipoCuerpo">
+        <xs:sequence>
+          <!-- Asumimos que tiene uno o más productos (si no se fuese a comprar ningún producto, no se mandaría este mensaje) -->
+          <xs:element name="producto" type="tipoProducto" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+	</xs:complexType>
+	
+	<!-- Tipo Productos Vendidos (TPV) -->
+	<xs:complexType name="tipoTPV">
+    <xs:complexContent>
+      <xs:extension base="tipoCuerpo">
+        <xs:sequence>
+          <!-- Asumimos que tiene cero o más productos (puede que no venda ningun producto) -->
+          <xs:element name="producto" type="tipoProducto" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+	</xs:complexType>
+	
+	<!-- Tipo Dime Otras Tiendas (TDOT) -->
+	<xs:complexType name="tipoTDOT">
+    <xs:complexContent>
+      <xs:extension base="tipoCuerpo">
+        <xs:sequence>
+        <!-- NINGUN ELEMENTO -->
+          <xs:element name="solicitud" type="tipoVacio"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+	</xs:complexType>
+	
+	<!-- Tipo Toma Tiendas (TTT) -->
+	<xs:complexType name="tipoTTT">
+    <xs:complexContent>
+      <xs:extension base="tipoCuerpo">
+        <xs:sequence>
+          <!-- Lista de direcciones de tiendas. Puede haber uno o mas elementos-->
+          <xs:element name="direccion" type="tipoDireccion" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+	</xs:complexType>
 	
 	<!-- Cuerpo para comprobar el correcto funcionamiento y parseo de XML (PETICION) -->
 	<xs:complexType name="tipoCuerpoPRUEBA_PETICION">
@@ -85,6 +243,7 @@
     </xs:complexContent>
 	</xs:complexType>
 	
+  <!-- Cuerpo para comprobar el correcto funcionamiento y parseo de XML (RESPUESTA) -->
 	<xs:complexType name="tipoCuerpoPRUEBA_RESPUESTA">
     <xs:complexContent>
       <xs:extension base="tipoCuerpo">
