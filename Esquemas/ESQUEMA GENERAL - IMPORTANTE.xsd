@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0"?>
 
-<!-- VERSION 4 - Luna Jiménez Fernández-->
+<!-- VERSION 4.1 - Luna Jiménez Fernández-->
 <!-- Ultima modificación - 12/11/2019 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	
@@ -92,8 +92,8 @@
 	<!-- Tipo Lista Tiendas (utilizado en TSAT) -->
 	<xs:complexType name="tipoListaTiendas">
     <xs:sequence>
-      <!-- Tienda conocida por el comprador. Puede haber una o más. Utiliza el tipo tienda -->
-      <xs:element name="tienda" type="tipoTienda" minOccurs="1" maxOccurs="unbounded"/>
+      <!-- Tienda conocida por el comprador. Puede haber ninguna (si hay desconexion), una o más. Utiliza el tipo tienda -->
+      <xs:element name="tienda" type="tipoTienda" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
 	</xs:complexType>
 	
