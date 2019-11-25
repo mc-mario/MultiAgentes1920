@@ -80,7 +80,7 @@
 	</xs:simpleType>
 	
   <!-- Tipo Tienda (utilizado en TSAT) -->
-  <xs:complexType name="tienda">
+  <xs:complexType name="tipoTienda">
     <xs:sequence>
       <!-- IP de la tienda conocida. Tipo IP -->
       <xs:element name="ip" type="tipoIP"/>
