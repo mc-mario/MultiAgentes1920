@@ -91,7 +91,7 @@ class Customer {
 							for(var i = 0; i < precios.length; i++){
 								if(precios[i] > 10){
 									delete productos[i]; //Deja 'undefined' en la posición
-									this.addToLog("El producto" + producto[i].id, + "es muy caro ¡NO LO COMPRO!");
+									this.addToLog("El producto" + productos[i].id, + "es muy caro ¡NO LO COMPRO!");
 								}
 							}
 							///////////////////////////////////////////////////////////////////////////////////
