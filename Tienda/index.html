@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+/* CSS para dividir en tres columnas la página */
+div.column1 {
+  float: left;
+  width: 25%;
+}
+
+div.column2 {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+div.caja {
+	width: 95%;
+	height: 750px;
+	overflow: auto;
+	background-color: WhiteSmoke;
+	border-style: solid;
+	border-width: 1px;
+}
+
+div.cliente {
+	min-width:99%;
+	height: 30px;
+	padding-top: 10px;
+	border-style: solid;
+	border-width: 1px;
+	background-color: LightGray;
+}
+
+</style>
+
+<head>
+	<title>Monitor de agentes comprador</title>
+	<meta charset="utf-8" />
+</head>
+
+<body>
+	<h1>Monitor de agentes comprador</h1>
+	<form>
+		Cantidad de compradores: <input type="text" id="num">
+		Número total de productos: <input type="text" id="totalProduct">
+		Productos a comprar por comprador: <input type="text" id="clientProduct">
+		Número de tiendas por IP: <input type="text" id="shops">
+		<input type="button" id="button" value="Crear compradores"  onclick="createCustomers()">
+	</form>
+	
+	<br>
+	
+	 <div class="row">
+		<div class="column1">
+			<h2 style="border-style: hidden hidden solid hidden">Lista de compradores</h2>
+			<div class="caja" id="customerList">
+			
+			</div>
+		</div>
+		<div class="column2">
+			<h2 style="border-style: hidden hidden solid hidden">Información del comprador seleccionado</h2>
+			<div class="caja">
+				<h3>Nombre del comprador: </h3>
+				<p id="clienteActual"> Ningún comprador seleccionado actualmente</p>
+				<h3>Tienda actual: </h3>
+				<p id="tiendaActual"> Ninguna</p>
+				<h3>Hora de inicio de la compra: </h3>
+				<p id="horaInicio"> --- </p>
+				<h3>Hora de finalizacion de la compra: </h3>
+				<p id="horaFinalizacion"> --- </p>
+				<h3>Cantidad de mensajes mandados: </h3>
+				<p id="cantidadMensajes"> --- </p>
+				<h3>Lista de la compra: </h3>
+				<div id="dynamicTable">
+			
+				</div>
+			</div>
+		</div>
+		<div class="column1">
+			<h2 style="border-style: hidden hidden solid hidden">Log</h2>
+			<div class="caja" id="log">
+			
+			</div>
+		</div>
+	  </div> 
+	
+</body>
+
+</html>
+
+<script type="text/javascript" src="LeerXML.js"></script>
+<script type="text/javascript" src="WriteMessage.js"></script>
+<script type="text/javascript" src="Product.js"></script>
+<script type="text/javascript" src="KnownShop.js"></script>
+<script type="text/javascript" src="Customer.js"></script>
+<script type="text/javascript" src="Hotel.js"></script>
+
