@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mensaje xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+<cabecera>
+	<identificacionEmisor></identificacionEmisor>
+	<identificacionReceptor></identificacionReceptor>
+</cabecera>
+<cuerpo xsi:type="tipoTTT">
+  <listaTiendas>
+    <tienda>
+      <ip>63.33.189.149</ip>
+      <id>2</id>
+      </tienda>
+  </listaTiendas>
+</cuerpo>
+</mensaje>
