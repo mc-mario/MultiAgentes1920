@@ -4,6 +4,8 @@
 ////RUBÉN MARTÍNEZ SOTOCA
 ////ANGIE JULIANA MANTILLA GÓMEZ
 
+//Última modificación: 18/12/2019
+
 //Funcion para cargar la cabecera del mensaje (todos comparten la misma cabecera)
 function cargarXMLCabecera(xml){
     var docXML = xml.responseXML;
