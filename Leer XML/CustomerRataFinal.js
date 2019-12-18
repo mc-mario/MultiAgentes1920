@@ -1,6 +1,10 @@
-//JESUS ANDRES FERNANDEZ
-//Ultima modificacion: 09/12/19
-//Version: 6.0
+//Última versión
+//Realizado por el Grupo 4
+////MIGUEL ENRIQUE JÁTIVA JIMÉNEZ
+////RUBÉN MARTÍNEZ SOTOCA
+////ANGIE JULIANA MANTILLA GÓMEZ
+
+//Última modificación: 18/12/2019
 
 class Customer {
 	
