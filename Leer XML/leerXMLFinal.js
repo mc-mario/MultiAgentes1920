@@ -1,3 +1,9 @@
+//Última versión
+//Realizado por el Grupo 4
+////MIGUEL ENRIQUE JÁTIVA JIMÉNEZ
+////RUBÉN MARTÍNEZ SOTOCA
+////ANGIE JULIANA MANTILLA GÓMEZ
+
 //Funcion para cargar la cabecera del mensaje (todos comparten la misma cabecera)
 function cargarXMLCabecera(xml){
     var docXML = xml.responseXML;
