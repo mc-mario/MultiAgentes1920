@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!--Creado y comentado por el grupo 4-->
+
+<html lang="en">
+
+<!-- 
+    El archivo se constituye por 4 funcionalidades:
+    -la primera, es que crea una tabla para mostrar la información
+    -la segunda, creamos la funcion loadDoc() para recoger el archivo y poder leerlo
+    -la tercera, cargarXMLCabecera(xml) el cual coge la informacion y la muestra en la tabla 
+    y a su vez, crea el objeto cabecera (añade toda la informacion de la cabecera necesaria y la devuelve)
+    -la cuarte, cargarXMLCuerpo(xml) el cual coge la informacion, la muestra en la tabla
+    y a su vez, crea el objeto cuerpo (guarda informacion del cuerpo y la devuelve)
+-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<!--Creamos la tabla en html-->
+<style>
+        table,th,td {
+          border : 1px solid black;
+          border-collapse: collapse;
+        }
+        th,td {
+          padding: 5px;
+        }
+</style>
+<!--Creamos el cuerpo en html-->
+<body>
+    <button id="boton1">Cargar Mensaje</button>
+    <br><br>
+    <h1>Cabecera</h1>
+    <br><br>
+    <table id="tabla1"></table>
+    <br><br>
+    <h1>Cuerpo</h1>
+    <table id="tabla2"></table>
+</body>
+
+<script>
+    
+    document.getElementById("boton1").addEventListener("click", loadDoc);
+    //Funcion crea un objeto XMLHttpRequest, agrega la función que se ejecutará 
+    //cuando la respuesta del servidor esté lista y envía la solicitud al servidor
+    function loadDoc() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(xhttp.responseText);
+            }
+        };
+        //Especificamos la solicitud, tipo POST, segundo parametro es la direccion
+        xhttp.open("POST", "http://161.67.197.10:90/hotelTienda.php", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		var mensaje = "mensaje=sorpresa"
+        //enviamos la solicitud al servidor
+        xhttp.send(mensaje);
+    }
+
+    //Funcion para cargar la cabecera del mensaje (todos comparten la misma cabecera)
+    function cargarXMLCabecera(xml){
+        var docXML = xml.responseXML;
+        var tabla = "<tr><th>Id mensaje</th><th>IP emisor</th><th>Id emisor</th><th>IP receptor</th><th>Id receptor</th><th>Tipo mensaje</th><th>Fecha</th><th>Hora envio</th><th>Hora recepcion</th></tr>";
+
+        //Id mensaje
+        tabla += "<tr><td>";
+        tabla += docXML.getElementsByTagName("idMensaje")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+        //IP emisor
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("ipEmisor")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+        //Id emisor
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("idEmisor")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+        //IP Receptor
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("ipReceptor")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+        //Id receptor
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("idReceptor")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+        //Tipo mensaje
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("tipoMensaje")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+        //Id emisor
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("fecha")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+        //Hora envio
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("horaEnvio")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+       
+        //Id emisor
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("horaRecepcion")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+        document.getElementById("tabla1").innerHTML = tabla;
+
+        //Creamos el objeto 'cabecera' para introducir todos los datos principales de un mensaje.
+        var cabecera = {
+            idMensaje = docXML.getElementsByTagName("idMensaje")[0].childNodes[0].nodeValue,  
+            ipEmisor = docXML.getElementsByTagName("ipEmisor")[0].childNodes[0].nodeValue,
+            idEmisor = docXML.getElementsByTagName("idEmisor")[0].childNodes[0].nodeValue,
+            ipReceptor = docXML.getElementsByTagName("ipReceptor")[0].childNodes[0].nodeValue,
+            idReceptor = docXML.getElementsByTagName("idReceptor")[0].childNodes[0].nodeValue,
+            tipoMensaje = docXML.getElementsByTagName("tipoMensaje")[0].childNodes[0].nodeValue,
+            fecha = docXML.getElementsByTagName("fecha")[0].childNodes[0].nodeValue,
+            horaEnvio = docXML.getElementsByTagName("horaEnvio")[0].childNodes[0].nodeValue,
+            horaRecepcion = docXML.getElementsByTagName("horaRecepcion")[0].childNodes[0].nodeValue
+        };
+
+        //Devolvemos la cabecera tipo objeto con toda la informacion del mensaje 
+        return cabecera;
+    }
+
+
+    //Funcion para cargar el cuerpo del mensaje (cada tipo mensaje hacemos una cosa)
+    function cargarXMLCuerpo(xml){
+        var docXML = xml.responseXML;
+        //Recogemos el tipo de mensaje
+        var tipoMensaje = docXML.getElementsByTagName("tipoMensaje")[0].childNodes[0].nodeValue;
+        var tablaCuerpo ="";
+        //Mensajes para la conexion/desconexion (tipo de mensaje: TSAT y TAAT)
+        if (tipoMensaje.localeCompare("TSAT") == 0 || tipoMensaje.localeCompare("TAAT") == 0){
+            var tiendas = docXML.getElementsByTagName("tienda");
+            tablaCuerpo += "<tr><th>IP tienda</th><th>Id Tienda</th></tr>";
+            var ipsTiendas = [];
+            var idsTiendas = [];
+            //recorremos todas las tiendas
+            for (var i = 0; i < tiendas.length; i++){
+                //IP tienda, añadimos informacion a la tabla y a la variable ipsTiendas
+                tablaCuerpo += "<tr><td>";
+                tablaCuerpo += tiendas[i].getElementsByTagName("ip")[0].textContent;
+                ipsTiendas.append(tiendas[i].getElementsByTagName("ip")[0].textContent);
+
+                //Id tienda, añadimos informacion a la tabla y a la variable idsTiendas
+                tablaCuerpo += "</td><td>";
+                tablaCuerpo += tiendas[i].getElementsByTagName("id")[0].textContent;
+                tablaCuerpo += "</td></tr>";
+                idsTiendas.append(tiendas[i].getElementsByTagName("id")[0].textContent);
+            }
+
+            //Creamos el objeto cuerpo, para estos mensajes se compone de 2 etiquetas
+            var cuerpo = {
+                idsTiendas = this.idsTiendas,
+                ipsTiendas = this.ipsTiendas
+            };
+        }
+
+        //Mensajes para la compra (tipo de mensaje: TCT, TSC y TPV)
+        if (tipoMensaje.localeCompare("TLC") == 0 || tipoMensaje.localeCompare("TCT") == 0 || tipoMensaje.localeCompare("TSC") == 0 || tipoMensaje.localeCompare("TPV") == 0){
+            var productos = docXML.getElementsByTagName("producto");
+            tablaCuerpo += "<tr><th>Id producto</th><th>Cantidad</th><th>Precio</th></tr>";
+            var idsProductos = [];
+            var cantidadesProductos = [];
+            var preciosProductos = [];
+            //Recorremos la lista de productos
+            for (var i = 0; i < productos.length; i++){
+                //Id producto, añadimos informacion a la tabla y a la variable idsProductos
+                tablaCuerpo += "<tr><td>";
+                tablaCuerpo += productos[i].getElementsByTagName("idProducto")[0].textContent;
+                idsProductos.append(tiendas[i].getElementsByTagName("idProducto")[0].textContent);
+                //Cantidad, añadimos informacion a la tabla y a la variable cantidadesProductos
+                tablaCuerpo += "</td><td>";
+                tablaCuerpo += productos[i].getElementsByTagName("cantidad")[0].textContent;
+                cantidadesProductos.append(tiendas[i].getElementsByTagName("cantidad")[0].textContent);
+                //Precio, añadimos informacion a la tabla y a la variable preciosProductos
+                tablaCuerpo += "</td><td>";
+                tablaCuerpo += productos[i].getElementsByTagName("precio")[0].textContent;
+                tablaCuerpo += "</td></tr>";
+                preciosProductos.append(tiendas[i].getElementsByTagName("precio")[0].textContent);
+            }
+
+            //Creamos el objeto cuerpo, para estos mensajes se compone de 3 etiquetas
+            var cuerpo = {
+                idsProductos = this.idsProductos,
+                cantidadesProductos = this.cantidadesProductos,
+                preciosProductos = this.preciosProductos
+            };
+        }
+        //Mensajes para la consulta de otras tiendas (tipo mensaje: TDOT)
+        if(tipoMensaje.localeCompare("TDOT") == 0){
+            //Este cuerpo esta vacio
+            var cuerpo = {};
+        }
+        
+        //Mensajes para la consulta toma tiendas (tipo mensaje: TTT)
+        if (tipoMensaje.localeCompare("TTT") == 0){
+            var direcciones = docXML.getElementsByTagName("direccion");
+            var compradores = [];
+            var ips = [];
+            var ids = [];
+            //Recorremos las direcciones
+            for (var i = 0; i < direcciones.length; i++){
+                //Comprador
+                compradores.append(productos[i].getElementsByTagName("comprador")[0].textContent);
+                //IPs
+                ips.append(productos[i].getElementsByTagName("ip")[0].textContent);
+                //Ids
+                ids.append(productos[i].getElementsByTagName("id")[0].textContent);
+            }
+
+            //Creamos el cuerpo, para estos mensajes se compone de 3 etiquetas
+            var cuerpo = {
+                compradores = this.compradores,
+                ips = this.ips,
+                ids = this.ids
+            };
+        }
+
+        //Insertamos la tabla creada para que se muestre en el archivo HTML y devolvemos el objeto 'cuerpo'
+        document.getElementById("tabla2").innerHTML = tablaCuerpo;
+        return cuerpo;
+    }
+</script>
+</html>

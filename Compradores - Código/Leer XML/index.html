@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+        table,th,td {
+          border : 1px solid black;
+          border-collapse: collapse;
+        }
+        th,td {
+          padding: 5px;
+        }
+        </style>
+<body>
+    <button id="boton1">Cargar Mensaje</button>
+    <br><br>
+    <h1>Cabecera</h1>
+    <br><br>
+    <table id="tabla1"></table>
+    <br><br>
+    <h1>Cuerpo</h1>
+    <table id="tabla2"></table>
+</body>
+
+<script>
+    document.getElementById("boton1").addEventListener("click", loadDoc);
+
+    function loadDoc() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(xhttp.responseText);
+            }
+        };
+        xhttp.open("POST", "http://161.67.197.10:90/hotelTienda.php", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		var mensaje = "mensaje=sorpresa"
+        xhttp.send(mensaje);
+    }
+
+    function cargarXMLCabecera(xml){
+        var docXML = xml.responseXML;
+        var tabla = "<tr><th>Id mensaje</th><th>IP emisor</th><th>Id emisor</th><th>IP receptor</th><th>Id receptor</th><th>Tipo mensaje</th><th>Fecha</th><th>Hora envio</th><th>Hora recepcion</th></tr>";
+        var cabecera = docXML.getElementsByTagName("cabecera");
+
+        //Id mensaje
+        tabla += "<tr><td>";
+        tabla += docXML.getElementsByTagName("idMensaje")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+
+        //IP emisor
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("ipEmisor")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+
+        //Id emisor
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("idEmisor")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+        
+        //IP Receptor
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("ipReceptor")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+
+        //Id receptor
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("idReceptor")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+
+        //Tipo mensaje
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("tipoMensaje")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+
+        //Id emisor
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("fecha")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+
+        //Hora envio
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("horaEnvio")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+
+        //Id emisor
+        tabla += "<td>";
+        tabla += docXML.getElementsByTagName("horaRecepcion")[0].childNodes[0].nodeValue;
+        tabla += "</td>";
+
+        document.getElementById("tabla1").innerHTML = tabla;
+    }
+
+    function cargarXMLCuerpo(xml){
+        var docXML = xml.responseXML;
+        var tipoMensaje = docXML.getElementsByTagName("tipoMensaje")[0].childNodes[0].nodeValue;
+        var tablaCuerpo ="";
+
+        //Mensajes para la conexion/desconexion
+        if (tipoMensaje.localeCompare("TSAT") == 0 || tipoMensaje.localeCompare("TAAT") == 0){
+            var tiendas = docXML.getElementsByTagName("tienda");
+            tablaCuerpo += "<tr><th>IP tienda</th><th>Id Tienda</th></tr>";
+
+            for (var i = 0; i < tiendas.length; i++){
+                //IP tienda
+                tablaCuerpo += "<tr><td>";
+                tablaCuerpo += tiendas[i].getElementsByTagName("ip")[0].textContent;
+
+                //Id tienda
+                tablaCuerpo += "</td><td>";
+                tablaCuerpo += tiendas[i].getElementsByTagName("id")[0].textContent;
+                tablaCuerpo += "</td></tr>";
+                }
+        }
+
+        //Mensajes para la compra
+        if (tipoMensaje.localeCompare("TLC") == 0 || tipoMensaje.localeCompare("TCT") == 0 || tipoMensaje.localeCompare("TSC") == 0 || tipoMensaje.localeCompare("TPV") == 0){
+            var productos = docXML.getElementsByTagName("producto");
+            tablaCuerpo += "<tr><th>Id producto</th><th>Cantidad</th><th>Precio</th></tr>";
+
+            for (var i = 0; i < productos.length; i++){
+                //Id producto
+                tablaCuerpo += "<tr><td>";
+                tablaCuerpo += productos[i].getElementsByTagName("idProducto")[0].textContent;
+
+                //Cantidad
+                tablaCuerpo += "</td><td>";
+                tablaCuerpo += productos[i].getElementsByTagName("cantidad")[0].textContent;
+
+                //Precio
+                tablaCuerpo += "</td><td>";
+                tablaCuerpo += productos[i].getElementsByTagName("precio")[0].textContent;
+                tablaCuerpo += "</td></tr>";
+            }
+        }
+
+        //Mensajes para la consulta de otras tiendas
+        if (tipoMensaje.localeCompare("TDOT") == 0 || tipoMensaje.localeCompare("TTT") == 0){
+            //FALTA   
+        }
+
+        document.getElementById("tabla2").innerHTML = tablaCuerpo;
+    }
+</script>
+</html>

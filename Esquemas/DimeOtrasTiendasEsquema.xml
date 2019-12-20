@@ -1,8 +1,0 @@
-<!----------TIPO DIME OTRAS TIENDAS----------->
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.dsi/uclm/multiagentes/grupo3">
-  <xs:element name="cuerpo">
-  </xs:element>
-</xs:schema>
-
-

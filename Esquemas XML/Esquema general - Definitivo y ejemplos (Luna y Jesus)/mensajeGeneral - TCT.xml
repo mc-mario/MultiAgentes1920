@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- VERSION 4 - Ejemplo TCT -->
+
+<mensaje
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="mensajeGeneral.xsd">
+
+	<!-- CABECERA -->
+	<cabecera>
+	
+		<!-- Identificador del mensaje -->
+		<idMensaje>1234</idMensaje>
+		
+		<!-- Identificador del emisor (dividido en IP e ID) -->
+		<identificacionEmisor>
+			<ipEmisor>192.168.0.1</ipEmisor>
+			<idEmisor>1</idEmisor>
+		</identificacionEmisor>
+		
+		<!-- Identificador del receptor (dividido en IP e ID) -->
+		<identificacionReceptor>
+			<ipReceptor>192.168.0.1</ipReceptor>
+			<idReceptor>1</idReceptor>
+		</identificacionReceptor>
+		
+		<!-- Tipo del mensaje -->
+		<tipoMensaje>TCT</tipoMensaje>
+		
+		<!-- Fecha del mensaje -->
+		<fecha>2019-09-24</fecha>
+		
+		<!-- Hora de envio -->
+		<horaEnvio>11:00:00</horaEnvio>
+		
+		<!-- Hora de recepción -->
+		<horaRecepcion>11:00:01</horaRecepcion>
+		
+	</cabecera>
+	
+	<!-- CUERPO -->
+	<!-- NOTA: Importante xsi:type para indicar el tipo de cuerpo que espera. -->
+	<!-- Los tipos TLC (Tipo Lista de la Compra), TCT (Tipo Coincidencia con Tienda), TSC (Tipo Solicitud Compra) y TPV (Tipo Productos Vendidos)
+	      son idénticos a efectos prácticos. La única diferencia es que TCT y TPV permiten que no haya elementos en el cuerpo (si, por ejemplo,
+        no hay coincidencias con la tienda o no se vende ningún producto -->
+	<cuerpo xsi:type="tipoTCT">
+    <producto>
+      <idProducto>1</idProducto>
+      <cantidad>2</cantidad>
+      <precio>3</precio>
+    </producto>
+    <producto>
+      <idProducto>4</idProducto>
+      <cantidad>5</cantidad>
+      <precio>6</precio>
+    </producto>
+	</cuerpo>
+	
+</mensaje>
