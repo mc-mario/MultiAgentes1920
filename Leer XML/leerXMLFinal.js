@@ -31,7 +31,6 @@ function cargarXMLCabecera(xml){
 function cargarXMLCuerpo(xml){
     var parser = new DOMParser();
     var docXML = parser.parseFromString(xml.responseText, "application/xml");
-    //var docXML = xml.responseXML; //quitado porque no funcionaba
     
     var tipoMensaje = docXML.getElementsByTagName("tipoMensaje")[0].childNodes[0].nodeValue;
 
@@ -51,13 +50,6 @@ function cargarXMLCuerpo(xml){
             ipsTiendas: ipsTiendas,
             idsTiendas: idsTiendas
         };
-        //Insertamos las listas por separado
-        //cuerpo['ipsTiendas'].push(ipsTiendas);
-        //cuerpo['idsTiendas'].push(idsTiendas);
-
-        //Otra forma de hacer lo mismo
-        //cuerpo.ipsTiendas.push(this.idsTiendas);
-        //cuerpo.idsTiendas.push(this.idsTiendas);
     }
 
     //Mensajes tipo ACK Acceso a Tienda
@@ -68,7 +60,6 @@ function cargarXMLCuerpo(xml){
     }
 
     //Mensajes para la compra (tipo de mensaje: TCT, TLC, TSC y TPV)
-    //EN EL ESQUEMA FALTA TIPO LISTA PRODUCTOS???
     if (tipoMensaje.localeCompare("TCT") == 0 || tipoMensaje.localeCompare("TLC") == 0 
     || tipoMensaje.localeCompare("TSC") == 0 || tipoMensaje.localeCompare("TPV") == 0){
         //Con TCT asumimos que tiene cero o más productos, con el resto asumimos que tiene uno o más productos
@@ -88,13 +79,6 @@ function cargarXMLCuerpo(xml){
             cantidadesProductos: cantidadesProductos,
             preciosProductos: preciosProductos
         };
-
-    
-
-        //cuerpo['idsProductos'].push(idsProductos);
-        //cuerpo['cantidadesProductos'].push(cantidadesProductos);
-        //cuerpo['preciosProductos'].push(preciosProductos);
-
         console.log(cuerpo.idsProductos.toString());
     }
 
@@ -124,12 +108,6 @@ function cargarXMLCuerpo(xml){
             ips: ips,
             ids: ids
         };
-        
-        //cuerpo['compradores'].push(compradores);
-        //cuerpo['ips'].push(ips);
-        //cuerpo['ids'].push(ids);
-
-     
     }
 
     //Comprobamos el correcto funcionamiento y parseo de XML (Peticion)
