@@ -1,8 +1,15 @@
+//JESUS ANDRES FERNANDEZ Y LUNA JIMÉNEZ FERNÁNDEZ
+//Ultima modificacion: 21/12/19
+//Version: 6.1
+
+//ID del siguiente comprador a crear y lista de compradores
 var customerID = 0;
 var customers = [];
+
+//Comprador mostrado en pantalla (-1 == Monitor general)
 var selectedCustomer = -1;
 
-//Variables de monitorizacion
+//Variables de monitorizacion (usadas para el monitor general)
 var totalCustomers = 0;
 var finishedCustomers = 0;
 var successfulCustomers = 0;
@@ -12,16 +19,17 @@ var totalMessages = 0;
 var totalMoney = 0.0;
 var startHour = "None";
 var endHour = "None";
-var hotelLog = [];
 
 //Crea a los compradores al pulsar el boton
 function createCustomers(){	
 	
+	//Extrae los valores de los campos
 	var number = document.getElementById("num").value;
 	var totalProduct = document.getElementById("totalProduct").value;
 	var customerProduct = document.getElementById("clientProduct").value;
 	var shopPerIP = document.getElementById("shops").value;
-	//Primera ejecucion
+
+	//En la primera creación de compradores nos interesa cambiar toda la información del monitor general
 	if(totalCustomers == 0){
 		totalCustomers = number;
 		finishedCustomers = 0;
@@ -33,15 +41,17 @@ function createCustomers(){
 		startHour = date.toISOString().substr(11, 8) + ":" +  date.getMilliseconds();
 		endHour = " --- ";
 	}
+	//En las sucesivas, solo queremos cambiar el total de compradores y la hora de finalizacion
 	else{
 		var suma = Number(totalCustomers) + Number(number);
 		totalCustomers = suma;
 		endHour = " --- ";
 	}
 
-	//Intenta imprimir pantalla
+	//Intenta actualizar el monitor general si está visible
 	requestUpdate(-1);
-			
+	
+	//Crea los compradores y los lanza secuencialmente (aunque se ejecuten concurrentemente posteriormente)
 	for (let i = 0; i < number; i++) {
 		var customer = new Customer(customerID, totalProduct, customerProduct, shopPerIP, this);
 		addCustomerToList(customer);
@@ -51,12 +61,15 @@ function createCustomers(){
 	}
 }
 
-//Anade al comprador a la lista de compradores del html
+//Anade el comprador a la lista de compradores del html
 function addCustomerToList(cust){
 	
 	var customer = document.createElement("div");
 	customer.setAttribute("id", cust.getID());
+
+	//Cuando se hace click en un comprador, se muestra su monitor
 	customer.setAttribute("onclick", "displayInfoCustomer(this.id)");
+
 	customer.setAttribute("class", "cliente");
 	var id = document.createTextNode("Comprador " + cust.getID());
 	customer.appendChild(id);
@@ -75,6 +88,7 @@ function displayInfoCustomer(id){
 	document.getElementById("cajaGeneral").style.display = "none";
 	document.getElementById("cajaComprador").style.display = "block";
 
+	//Actualiza todos los campos en el monitor del comprador
 	document.getElementById("log").innerHTML = "";
 	for (var customer of customers){
 		if(id == customer.getID()){
@@ -94,6 +108,7 @@ function displayInfoCustomer(id){
 }
 
 //Crea la tabla de productos y la muestra en informacion
+//Utilizado para el monitor del comprador
 function addTable(customer){
 	
 	var td;
@@ -181,33 +196,27 @@ function displayInfoMonitor(){
 	document.getElementById("horaInicioTotal").innerHTML = startHour;
 	document.getElementById("horaFinTotal").innerHTML = endHour;
 
-	//Vacia el log
+	//Vacia el log (el monitor general no imprime logs)
 	document.getElementById("log").innerHTML = "";
 
 }
 
-//Solicita actualizar la info en pantalla si es necesario
+//Solicita actualizar la info en pantalla si es necesario (el monitor del solicitante está actualmente en pantalla)
+//Esta función será llamada por los compradores cada vez que deberían actualizar algo en su monitor
+//y por el hotel de compradores cada vez que uno de sus callbacks sea llamado
 function requestUpdate(id){
 	if(id == -1 && id == this.selectedCustomer) displayInfoMonitor();
 	else if(id == this.selectedCustomer) displayInfoCustomer(id);
 }
 
-
-
 //CALLBACKS
-//Añade un mensaje
+//Se ha mandado un mensaje
 function messageSent(){
 	totalMessages++;
 	requestUpdate(-1);
 }
 
-//Añade un mensaje al log general
-function pushToLog(mensaje){
-	hotelLog.push(mensaje);
-	requestUpdate(-1);
-}
-
-//Marca un cliente como finalizado
+//Un cliente ha acabado sus compras
 function customerFinished(state, varCust){
 	if (state){ //Acabado con exito: TRUE
 		successfulCustomers++;
@@ -223,12 +232,10 @@ function customerFinished(state, varCust){
 		var date = new Date();
 		endHour = date.toISOString().substr(11, 8) + ":" +  date.getMilliseconds();
 	}
-
-	//Imprime pantalla
 	requestUpdate(-1);
 }
 
-//Aumenta la cantidad de dinero mostrada
+//Un comprador ha gastado dinero
 function customerSpentMoney(money){
 	totalMoney += money;
 }

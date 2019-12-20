@@ -1,6 +1,6 @@
-//JESUS ANDRES FERNANDEZ
-//Ultima modificacion: 09/12/19
-//Version: 6.0
+//JESUS ANDRES FERNANDEZ Y LUNA JIMÉNEZ FERNÁNDEZ
+//Ultima modificacion: 21/12/19
+//Version: 6.1
 
 class Customer {
 	
@@ -41,10 +41,13 @@ class Customer {
 		this.endHour = "None";
 		this.messages = 0;
 
-		//Dinero gastado
+		//Dinero gastado y lista temporal de precios
+		//(para una implementación rápida, se decidió utilizar una variable de clase para guardar los precios
+		//en vez de manejarlos directamente dentro de cada función que los utiliza, aunque eso fuese más apropiado)
+		//
+		//Lo más apropiado hubiera sido diseñar directamente la clase Product incluyendo el importe de cada producto,
+		//pero como se decidió inicialmente no considerarlo se ha realizado esta solución "apaño"
 		this.money = 0;
-
-		//Lista temporal de precios
 		this.precios = [];
 
 		//Referencia al hotel
@@ -339,9 +342,6 @@ class Customer {
 		};
 		var mensaje = composeMessage(cabecera, cuerpo);
 
-		//DEBUG
-		this.alerta("Mensaje de conexion: " + mensaje);
-
 		//Puntero al propio cliente (para usar dentro de la promesa)
 		var self = this;
 
@@ -370,7 +370,6 @@ class Customer {
 			xhr.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
 					//XML recibido (en este caso, al ser un ACK no hace falta comprobar nada)
-					self.alerta("Mensaje recibido de conexion: " + xhr.responseText);
 					resolve(true);
 				}
 			};
@@ -400,12 +399,9 @@ class Customer {
 		var cuerpo = {};
 		var mensaje = composeMessage(cabecera, cuerpo);
 
-		this.alerta("Mensaje de solicitud de tiendas: " + mensaje);
-
 		//Puntero al propio cliente (para usar dentro de la promesa)
 		var self = this;
 
-		this.logDebug("Mandamos mensaje de solicitud de tiendas")
 		//PROMESA:
 		return new Promise(function(resolve, reject){
 
@@ -419,7 +415,6 @@ class Customer {
 
 			//Error de conexión
 			xhr.onerror = function(){
-				self.alerta("Mensaje de error en respuesta de solicitud de tiendas: " + xhr.responseText);
 				resolve(false);
 			};
 
@@ -432,7 +427,6 @@ class Customer {
 			xhr.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
 					//XML recibido, lo devolvemos
-					self.alerta("Mensaje de respuesta de solicitud de tiendas: " + xhr.responseText);
 					resolve(xhr);
 				}
 			};
@@ -447,17 +441,13 @@ class Customer {
 	processShops(xhr, shop){
 		//Lee el contenido del mensaje
 		var procesado = cargarXMLCuerpo(xhr);
-		this.logDebug(JSON.stringify(procesado));
-		this.logDebug(procesado.ips.length);
 
 		//Tiendas por añadir
 		var tiendasNuevas = [];
 
 		//Saca las tiendas
 		for(var i = 0;i < procesado.ips.length; i++){
-			this.logDebug("Valor de i: " + i)
 			var tienda = new KnownShop(procesado.ips[i], parseInt(procesado.ids[i]));
-			this.logDebug("Tienda nueva - ip: " + tienda.getIp() + " - id: " + tienda.getId());
 
 			//Comprueba si la tienda está en las listas conocidas
 			var nueva = true;
@@ -465,14 +455,12 @@ class Customer {
 
 				if(this.equalsShops(tienda,shop2)){
 					nueva = false;
-					this.logDebug("Coincidencia");
 					break;
 				}
 			}
 
 			//Si la tienda es nueva, se introduce a KnownShops y a la lista de tiendas nuevas
 			if(nueva){
-				this.logDebug("Tienda nueva");
 				this.knownShops.push(tienda);
 				tiendasNuevas.push(tienda);
 			}
@@ -573,22 +561,25 @@ class Customer {
 		var procesado = cargarXMLCuerpo(xhr);
 
 		var productos = [];
+		//Se borra la lista de precios que tiene este comprador para evitarnos conflictos
 		this.precios = [];
 
 		//Va recogiendo los productos devueltos
 		for(var i = 0; i < procesado.idsProductos.length; i++){
 			productos.push(new Product(procesado.idsProductos[i], procesado.cantidadesProductos[i]));
+			//Se introducen los precios en la lista de precios temporal del comprador
 			this.precios.push(procesado.preciosProductos[i]);
 		}
 
-		var i = 0;
+		//Variable temporal usada para ir leyendo los precios a la vez que se leen los productos ofertados
+		var precioId = 0;
 
 		//Mensaje de log correspondiente
 		if(productos.length > 0){
 			this.addToLog("La tienda " + shop.getString() + " tiene los siguientes productos que necesita el comprador " + this.id + ":");
 			for(var producto of productos){
-				this.addToLog("* Producto " + producto.getId() + " - " + this.precios[i] + " €");
-				i++;
+				this.addToLog("* Producto " + producto.getId() + " - " + this.precios[precioId] + " €");
+				precioId++;
 			}
 		}
 		else{
@@ -675,7 +666,9 @@ class Customer {
 			productos.push(new Product(procesado.idsProductos[i], procesado.cantidadesProductos[i]));
 		}
 
-		var j = 0;
+		//Variable temporal usada para ir leyendo los precios a la vez que se leen los productos ofertados
+		var precioId = 0;
+		//Variable temporal que indica el gasto realizado en esta compra
 		var dinero = 0;
 
 		//Mensaje de log correspondiente y actualización de la cantidad de los productos
@@ -684,11 +677,16 @@ class Customer {
 			for(var i = 0; i < productos.length; i++){
 				//Encuentra el producto en la lista y reduce su cantidad
 				this.reduceProductQuantity(productos[i].getId(),productos[i].getQuantity());
-				this.addToLog("* Producto " + productos[i].getId() + " (" + productos[i].getOriginalQuantity() + " uds) - " + this.precios[j] + " €/ud");
+				this.addToLog("* Producto " + productos[i].getId() + " (" + productos[i].getOriginalQuantity() + " uds) - " + this.precios[precioId] + " €/ud");
+
+				//Se ha usado una variable temporal para calcular el nuevo dinero gastado por el comprador en esta compra
+				//Usamos Number() porque originalmente daba problemas con el monitor (trataba el número como un string e intentaba concatenarlo)
 				var temp = Number(dinero) + Number(this.precios[j]);
-				dinero += temp;
-				j++;
+				dinero = temp;
+				precioId++;
 			}
+			//Actualizamos el coste total que lleva el comprador
+			//Misma situación que arriba, sin Number era tratado como string
 			var temp = Number(dinero) + Number(this.money);
 			this.money = temp;
 			customerSpentMoney(this.money);
@@ -709,74 +707,49 @@ class Customer {
 		}
 	}
 
-	//Metodo get del log del comprador
-	getLog(){
-		return this.log;
-	}
-	
-	//Metodo get del ID del comprador
-	getID(){
-		return this.id;
-	}
-	
-	//Metodo get de la tienda en la que se encuentra el comprador
-	getShop(){
-		return this.shop;
-	}
-	
-	//Metodo get de la lista de compra del comprador
-	getProductList(){
-		return this.productList;
-	}
-	
-	//Metodo get de la hora inicial de compra
-	getStartHour(){
-		return this.startHour;
-	}
-	
-	//Metodo get de la hora final de compra
-	getEndHour(){
-		return this.endHour;
-	}
-	
-	//Metodo get de la cantidad de mensajes mandados por el comprador
-	getMessages(){
-		return this.messages;
-	}
-
-	//Metodo get del dinero gastado por el comprador
-	getMoneySpent(){
-		return this.money;
-	}
-
-	//Se encarga de actualizar el log
+	//Actualiza el log
 	addToLog(string){
 		this.log.push(string);
-
-		//Mete el log en el log general
-		pushToLog(string);
-
-		//Actualiza el log y el comprador en pantalla si es el comprador activo en el hotel
+		//Actualiza el monitor en pantalla si el monitor activo es el del comprador
 		requestUpdate(this.id);
 	}
 
-	//Manda alerta si esta en modo debug
-	alerta(mensaje){
-		if(this.debug){
-			alert(mensaje)
-		}
-	}
-
-	//Incrementa mensajes y avisa al monitor
+	//Manda un mensaje y notifica al hotel para monitorización
 	mandaMensaje(){
 		this.messages++;
 		messageSent();
 	}
 
-	//Log en consola si est en modo debug
-	logDebug(mensaje){
-		if(this.debug){
-			console.log(mensaje)
-		}
+	//GETTERS
+	getLog(){
+		return this.log;
+	}
+	
+	getID(){
+		return this.id;
+	}
+	
+	getShop(){
+		return this.shop;
+	}
+
+	getProductList(){
+		return this.productList;
+	}
+
+	getStartHour(){
+		return this.startHour;
+	}
+
+	getEndHour(){
+		return this.endHour;
+	}
+
+	getMessages(){
+		return this.messages;
+	}
+
+	getMoneySpent(){
+		return this.money;
 	}
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 
+<!--CSS-->
 <style>
 /* CSS para dividir en tres columnas la página */
 div.column1 {
@@ -37,7 +38,6 @@ div.cliente {
 	border-width: 1px;
 	background-color: LightGray;
 }
-
 </style>
 
 <head>
@@ -47,26 +47,30 @@ div.cliente {
 
 <body>
 	<h1>Monitor de agentes comprador</h1>
+	<!--Input del sistema-->
 	<form>
 		Cantidad de compradores: <input type="text" id="num">
 		Número total de productos: <input type="text" id="totalProduct">
 		Productos a comprar por comprador: <input type="text" id="clientProduct">
 		Número de tiendas por IP: <input type="text" id="shops">
 		<input type="button" id="button" value="Crear compradores"  onclick="createCustomers()">
+		<!--Botón para abrir el monitor general-->
 		<input type="button" id="button2" value="Mostrar monitorizacion general" onclick="displayInfoMonitor()">
 	</form>
 	
 	<br>
 	
 	 <div class="row">
+		<!--Lista de compradores-->
 		<div class="column1">
 			<h2 style="border-style: hidden hidden solid hidden">Lista de compradores</h2>
 			<div class="caja" id="customerList">
-			
 			</div>
 		</div>
+		<!--Monitores - Global y por comprador -->
 		<div class="column2">
 			<h2 style="border-style: hidden hidden solid hidden" id="tituloComprador">Información</h2>
+			<!--Monitor global-->
 			<div class="caja" id="cajaGeneral">
 				<h2>Información del sistema</h2>
 				<h3>Compradores totales:</h3>
@@ -86,6 +90,7 @@ div.cliente {
 				<h3>Hora de finalización de la compra:</h3>
 				<p id="horaFinTotal"> Compras no iniciadas</p>
 			</div>
+			<!--Monitor del comprador-->
 			<div class="caja" id="cajaComprador" style="display: none">
 				<h2>Información del comprador</h2>
 				<h3>Nombre del comprador: </h3>
@@ -105,6 +110,7 @@ div.cliente {
 				</div>
 			</div>
 		</div>
+		<!--Log de cada cliente (el monitor general no utiliza el log)-->
 		<div class="column1">
 			<h2 style="border-style: hidden hidden solid hidden">Log</h2>
 			<div class="caja" id="log">
@@ -116,6 +122,7 @@ div.cliente {
 
 </html>
 
+<!--Imports de Javascript-->
 <script type="text/javascript" src="LeerXML.js"></script>
 <script type="text/javascript" src="WriteMessage.js"></script>
 <script type="text/javascript" src="Product.js"></script>

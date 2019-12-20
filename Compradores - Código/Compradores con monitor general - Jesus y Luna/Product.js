@@ -1,3 +1,7 @@
+//JESUS ANDRES FERNANDEZ Y LUNA JIMÉNEZ FERNÁNDEZ
+//Ultima modificacion: 26/11/19
+//Version: 2.0
+
 class Product {
 	
 	//Constructor de la clase producto
@@ -12,16 +16,6 @@ class Product {
 		return (this.actualQuantity == 0);
 	}
 
-	//Metodo get del id del producto
-	getId(){
-		return this.id;
-	}
-	
-	//Metodo get de la cantidad del producto por comprar
-	getQuantity(){
-		return this.actualQuantity;
-	}
-	
 	//Reduce el producto en la cantidad especificada
 	reduceQuantity(num){
 		this.actualQuantity = this.actualQuantity-num;
@@ -32,7 +26,15 @@ class Product {
 		this.actualQuantity = this.actualQuantity+num;
 	}
 
-	//Metodo get de la cantidad del producto original
+	//GETTERS
+	getId(){
+		return this.id;
+	}
+
+	getQuantity(){
+		return this.actualQuantity;
+	}
+
 	getOriginalQuantity(){
 		return this.originalQuantity;
 	}

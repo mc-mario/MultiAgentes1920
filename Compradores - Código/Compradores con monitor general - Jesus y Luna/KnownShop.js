@@ -1,3 +1,7 @@
+//JESUS ANDRES FERNANDEZ Y LUNA JIMÉNEZ FERNÁNDEZ
+//Ultima modificacion: 23/11/19
+//Version: 1.0
+
 class KnownShop {
 	
 	//Constructor de la clase tienda conocida
@@ -6,17 +10,15 @@ class KnownShop {
 		this.id = id;
     }
 	
-	//Metodo get de la IP de la tienda
+	//GETTERS
 	getIp(){
 		return this.ip;
 	}
-	
-	//Metodo get del ID de la tienda
+
 	getId(){
 		return this.id;
 	}
 
-	//Devuelve una version string de la tienda
 	getString(){
 		return this.ip + "-" + this.id;
 	}
